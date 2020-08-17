@@ -86,7 +86,7 @@ class SelectTranslator:
             )['bleu'])
         return scores
 
-    def bert_score(self, predictions: List[str], references: List[str], lang: str = "en"):
+    def bert_score(self, predictions: List[str], references: List[str], lang: str):
         return self.bert_score_metric.compute(
             predictions,
             references,
