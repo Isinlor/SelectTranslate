@@ -1,28 +1,26 @@
+import sacrebleu
 from nlp import load_metric
 
 # target = open("./data/en-fi/test.trg")
 # output = open("./outputs/en-fi.txt")
 
 target = open("./data/en-fi/newstest2017-enfi.fi")
-output = open("./outputs/newstest2017-en-fi-10.txt")
+output = open("./outputs/newstest2017-en-fi.txt")
 
-bleu_metric = load_metric("bleu")
 bert_score_metric = load_metric("bertscore", device="cuda")
 
-targets_bleu = []
-targets_bert = []
+targets = []
 outputs = []
 
 for target_sample, output_sample in zip(target, output):
-    targets_bleu.append([target_sample])
-    targets_bert.append(target_sample)
+    targets.append(target_sample)
     outputs.append(output_sample)
 
-print(bleu_metric.compute(outputs, targets_bleu))
+print(sacrebleu.corpus_bleu(outputs, [targets]).score)
 
 print(bert_score_metric.compute(
     outputs,
-    targets_bert,
+    targets,
     lang='fi',
     model_type="roberta-base",
     device="cuda"
